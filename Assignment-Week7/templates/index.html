@@ -1,0 +1,21 @@
+{%extends "layout.html"%}
+
+<!-- header -->
+
+{%block header%}
+<p>歡迎光臨</p>
+{%endblock%}
+
+<!-- nav -->
+{%block nav%}
+<ul class="menu">
+  <li><a href="{{ url_for('signin')}}">Sign In</a></li>
+  <li><a href="{{ url_for('signup')}}">Sign Up</a></li>
+</ul>
+{%endblock%}
+
+<!-- body -->
+{%block body%}
+<h2>Welcome</h2>
+
+{%endblock%}

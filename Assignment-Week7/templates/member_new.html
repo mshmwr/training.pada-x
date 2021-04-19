@@ -1,0 +1,190 @@
+<html>
+  <head>
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* nav */
+      .topbar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem 0;
+        background-color: rgb(2, 57, 88);
+        font-size: 1.2rem;
+      }
+      .home {
+        flex: 1;
+        text-align: center;
+      }
+      header {
+        flex: 4;
+        height: 6rem;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        color: white;
+      }
+      nav {
+        flex: 3;
+        text-align: right;
+        padding-right: 2rem;
+      }
+      .menu {
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        padding-inline-start: 0;
+      }
+      .menu li {
+        display: inline-block;
+        list-style: none;
+        padding: 0rem 0.5rem;
+      }
+      .menu li a {
+        text-decoration: none;
+        color: white;
+      }
+      .menu li a:hover {
+        color: rgb(143, 143, 143);
+      }
+
+      /* main */
+
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-direction: column;
+      }
+
+      /* input */
+      input {
+        padding: 0.4rem 0.6rem;
+        margin: 0.5rem;
+        border-radius: 0.2rem;
+      }
+    </style>
+    <script type="text/javascript">
+      let userInquire;
+      let nameUpdate;
+      let replyResult;
+      let updateResult;
+      let headerName;
+      let userInquireText = "";
+      let nameUpdateText = "";
+
+      window.onload = function () {
+        let inquiryBtn = document.getElementById("inquiryBtn");
+        userInquire = document.getElementById("userInquire");
+        nameUpdate = document.getElementById("nameUpdate");
+        replyResult = document.getElementById("replyResult");
+        updateResult = document.getElementById("updateResult");
+        headerName = document.getElementById("headerName");
+
+        //Get
+        inquiryBtn.addEventListener("click", function () {
+          userInquireText = userInquire.value;
+          getData(userInquireText);
+          updateResult.innerHTML = "";
+          nameUpdate.value = "";
+        });
+        //Post
+        updateBtn.addEventListener("click", function () {
+          nameUpdateText = nameUpdate.value;
+          if (nameUpdateText === "") return;
+          let url = "http://127.0.0.1:3000/api/user";
+          let data = { name: nameUpdateText };
+
+          postData(url, data);
+        });
+      };
+      function getData(username) {
+        let url = "http://127.0.0.1:3000/api/users?username=" + username;
+        fetch(url, {
+          mode: "cors",
+        })
+          .then((response) => {
+            return response.text();
+          })
+          .then((result) => {
+            let _name =
+              JSON.parse(result).data !== null
+                ? JSON.parse(result).data.name
+                : "";
+            return _name;
+          })
+          .then((_nameResponse) => {
+            if (_nameResponse !== "") {
+              replyResult.innerHTML =
+                _nameResponse + " (" + userInquireText + ")";
+            } else {
+              replyResult.innerHTML = "查無此人";
+            }
+          });
+      }
+      function postData(url, data) {
+        return fetch(url, {
+          body: JSON.stringify(data),
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "user-agent": "Mozilla/4.0 MDN Example",
+            "content-type": "application/json",
+          },
+          method: "POST",
+          mode: "cors",
+          redirect: "follow",
+          referrer: "no-referrer",
+        }).then((response) => {
+          let isTrue = true;
+          if (response["ok"]) {
+            updateResult.innerHTML = "更新成功";
+            headerName.innerHTML = nameUpdateText;
+          } else if (response["error"]) {
+            updateResult.innerHTML = "更新失敗";
+          } else {
+            console.log("response is undefined");
+          }
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="home">
+        <a href="{{ url_for('home')}}">
+          <img src="/icon-home.png" alt="icon" title="home" />
+        </a>
+      </div>
+      <header>
+        <div><span id="headerName">{{name}}</span>，您好</div>
+      </header>
+      <nav></nav>
+    </div>
+    <main>
+      <p class="header"></p>
+      <div>
+        <p>恭喜成功登入系統</p>
+        <a href="/signout">登出系統</a>
+      </div>
+
+      <div>
+        <p><b>查詢會員姓名</b></p>
+
+        <input type="text" id="userInquire" />
+        <input id="inquiryBtn" type="button" value="查詢" />
+        <div id="replyResult"></div>
+      </div>
+      <div>
+        <p><b>更新我的姓名</b></p>
+
+        <input type="text" id="nameUpdate" />
+        <input id="updateBtn" type="button" value="更新" />
+        <div id="updateResult"></div>
+      </div>
+    </main>
+  </body>
+</html>
