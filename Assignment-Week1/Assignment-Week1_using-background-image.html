@@ -1,0 +1,310 @@
+<!-- 
+
+  1. 最上排topbar裡面，兩個div: 標題(文字靠左)、選單列(文字靠右)
+    html:
+    (1) 選單列用ul li
+    css:
+    (1) 兩個div要做RWD
+
+  2. 歡迎文字的div，上下左右置中對齊，高度300px
+    css:
+    (1) 文字基礎尺寸20px: body{}
+    (2) 中間歡迎文字尺寸為基礎尺寸的兩倍大: 2rem
+  3. 方框部分: 
+    html:
+    (1) 先用大div，寬度1200px
+    (2) 拉8個div(方框項目)，裡面包2個div(圖片、文字)，寬度設成20%，上下左右加margin
+    css:
+    (1) 圖片寬度與方框相同: width: 100%
+    (2) 文字置中: 應該也是上下左右置中吧
+      
+  4. RWD: 不同螢幕大小
+    @media width >1200
+      方框部分: 1200px
+      四個一排
+    @media width 600~1200
+      方框部分: 90%
+      兩個一排
+    @media width <600
+      方框部分: 90%
+      一個一排
+
+  5. 選單做成漢堡
+    使用label(要加for="burger")搭配checkbox(id="burger")兩個才會連動
+    改變li的排列方式: display: block
+    先隱藏選單(ul)，點選後(#burger:checked + ul)再顯示: 使用Adjacent sibling combinator
+
+
+  6. 消除div邊界
+    body: margin, padding: 0
+
+ -->
+<html>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1"
+  />
+  <title>Assingment-Week 1 [yclee]</title>
+  <head>
+    <style type="text/css">
+      /* 1. 最上排topbar裡面，兩個div: 標題(文字靠左)、選單列(文字靠右) */
+      .topbar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem 0;
+      }
+      header {
+        margin: 0 0.5rem;
+        flex: 1;
+        text-align: left;
+      }
+      nav {
+        flex: 2;
+        text-align: right;
+      }
+      .menu {
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        padding-inline-start: 0;
+      }
+      .menu li {
+        display: inline-block;
+        list-style: none;
+        padding: 0 0.5rem;
+      }
+      .menu li a {
+        text-decoration: none;
+        color: rgb(32, 32, 32);
+      }
+      .menu li a:hover {
+        color: rgb(95, 94, 94);
+      }
+      /* 2. 歡迎文字的div，上下左右置中對齊，高度300px */
+      body {
+        font-size: 20px;
+      }
+      .welcome {
+        height: 300px;
+        font-size: 2rem;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(190, 221, 250);
+      }
+
+      /* 3. 方框部分 */
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .content {
+        width: 1200px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 2rem 0;
+      }
+      /* .box {
+        width: 23%;
+        margin: 0.5rem 0;
+      } */
+
+      /* BG-Change Start */
+      .box {
+        width: 23%;
+        margin: 0.5rem 0;
+      }
+      .image {
+        background-image: url(img/sakura.png);
+        background-size: cover;
+        height: 10em;
+        width: 100%;
+      }
+
+      /* BG-Change End */
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      .description {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 2rem;
+        background-color: rgb(253, 207, 214);
+      }
+
+      /* 4. RWD: 螢幕寬度(在最下面)*/
+
+      /* 5. 漢堡 */
+      #burger {
+        display: none;
+      }
+
+      label {
+        display: none;
+      }
+
+      /* 6. 消除div邊界*/
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* 4. RWD: 螢幕寬度(由大到小) 1200 600 */
+      @media (max-width: 1200px) {
+        .content {
+          width: 90%;
+        }
+        .box {
+          width: 43%;
+        }
+      }
+      @media (max-width: 600px) {
+        .content {
+          width: 90%;
+        }
+        .box {
+          width: 100%;
+        }
+
+        /* 5. 漢堡 */
+        ul {
+          display: none;
+        }
+        label {
+          display: block;
+        }
+        #burger:checked + ul {
+          display: block;
+        }
+        .icon {
+          margin: 0 0.5rem;
+          height: 1.4rem;
+        }
+        .menu {
+          position: absolute;
+          z-index: 100;
+          top: 52px;
+          right: 0px;
+        }
+        .menu li {
+          display: block;
+          padding: 1rem 2rem;
+          background-color: rgba(255, 255, 255, 0.664);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="topbar">
+      <header>My Website</header>
+      <nav>
+        <label for="burger">
+          <div class="icon"><img src="img/icon-menu.png" /></div>
+        </label>
+        <input type="checkbox" id="burger" />
+        <ul class="menu">
+          <li><a href="#">Item 1</a></li>
+          <li><a href="#">Item 2</a></li>
+          <li><a href="#">Item 3</a></li>
+          <li><a href="#">Item 4</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="welcome">Welcome To MyHome</div>
+    <main>
+      <div class="content">
+        <div class="box">
+          <div class="image bg">
+            <!-- <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />-->
+          </div>
+          <div class="description">Title 1</div>
+        </div>
+        <div class="box">
+          <div class="image bg">
+            <!-- <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />-->
+          </div>
+          <div class="description">Title 2</div>
+        </div>
+        <div class="box">
+          <div class="image bg">
+            <!-- <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />-->
+          </div>
+          <div class="description">Title 3</div>
+        </div>
+        <div class="box">
+          <div class="image bg">
+            <!-- <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />-->
+          </div>
+          <div class="description">Title 4</div>
+        </div>
+        <div class="box">
+          <div class="image bg">
+            <!-- <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />-->
+          </div>
+          <div class="description">Title 5</div>
+        </div>
+        <div class="box">
+          <div class="image bg">
+            <!-- <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />-->
+          </div>
+          <div class="description">Title 6</div>
+        </div>
+        <div class="box">
+          <div class="image bg">
+            <!-- <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />-->
+          </div>
+          <div class="description">Title 7</div>
+        </div>
+        <div class="box">
+          <div class="image bg">
+            <!-- <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />-->
+          </div>
+          <div class="description">Title 8</div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

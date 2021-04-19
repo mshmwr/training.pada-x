@@ -1,0 +1,272 @@
+<html>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1"
+  />
+  <title>Assingment-Week 1 [yclee]</title>
+  <head>
+    <style type="text/css">
+      /* 1. 最上排topbar裡面，兩個div: 標題(文字靠左)、選單列(文字靠右) */
+      .topbar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem 0;
+      }
+      header {
+        margin: 0 0.5rem;
+        flex: 1;
+        text-align: left;
+      }
+      nav {
+        flex: 2;
+        text-align: right;
+      }
+      .menu {
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        padding-inline-start: 0;
+      }
+      .menu li {
+        display: inline-block;
+        list-style: none;
+        padding: 0 0.5rem;
+      }
+      .menu li a {
+        text-decoration: none;
+        color: rgb(32, 32, 32);
+      }
+      .menu li a:hover {
+        color: rgb(95, 94, 94);
+      }
+      /* 2. 歡迎文字的div，上下左右置中對齊，高度300px */
+      body {
+        font-size: 20px;
+      }
+      .welcome {
+        height: 300px;
+        font-size: 2rem;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(190, 221, 250);
+      }
+
+      /* 3. 方框部分 */
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .content {
+        width: 1200px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 2rem 0;
+      }
+      .box {
+        width: 23%;
+        margin: 0.5rem 0;
+      }
+      /* 圖片防止變形 START */
+      .image {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-top: 70%; /* 宽高比例为10：7 */
+      }
+      .image img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      /* 圖片防止變形 END */
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      .description {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 4rem;
+        padding: 0 0.8rem;
+        background-color: rgb(253, 207, 214);
+      }
+
+      /* 4. RWD: 螢幕寬度(在最下面)*/
+
+      /* 5. 漢堡 */
+      #burger {
+        display: none;
+      }
+
+      label {
+        display: none;
+      }
+
+      /* 6. 消除div邊界*/
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* 4. RWD: 螢幕寬度(由大到小) 1200 600 */
+      @media (max-width: 1200px) {
+        .content {
+          width: 90%;
+        }
+        .box {
+          width: 43%;
+        }
+      }
+      @media (max-width: 600px) {
+        .content {
+          width: 90%;
+        }
+        .box {
+          width: 100%;
+        }
+
+        /* 5. 漢堡 */
+        ul {
+          display: none;
+        }
+        label {
+          display: block;
+        }
+        #burger:checked + ul {
+          display: block;
+        }
+        .icon {
+          margin: 0 0.5rem;
+          height: 1.4rem;
+        }
+        .menu {
+          position: absolute;
+          z-index: 100;
+          top: 52px;
+          right: 0px;
+        }
+        .menu li {
+          display: block;
+          padding: 1rem 2rem;
+          background-color: rgba(255, 255, 255, 0.664);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="topbar">
+      <header>My Website</header>
+      <nav>
+        <label for="burger">
+          <div class="icon"><img src="img/icon-menu.png" /></div>
+        </label>
+        <input type="checkbox" id="burger" />
+        <ul class="menu">
+          <li><a href="#">Item 1</a></li>
+          <li><a href="#">Item 2</a></li>
+          <li><a href="#">Item 3</a></li>
+          <li><a href="#">Item 4</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="welcome">Welcome To MyHome</div>
+    <main>
+      <div class="content">
+        <div class="box">
+          <div class="image">
+            <img
+              src="https://i.pinimg.com/originals/0c/18/86/0c1886c41bfb7b3f57d6192032eb0929.jpg"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />
+          </div>
+          <div class="description">Title 1</div>
+        </div>
+        <div class="box">
+          <div class="image">
+            <img
+              src="https://hahow-production.imgix.net/5b59a1ff8011d1001e33483d?w=1000&auto=format&sat=0&s=57c98b208e92068b0c2693c08029b1d3"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />
+          </div>
+          <div class="description">Title 2</div>
+        </div>
+        <div class="box">
+          <div class="image">
+            <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />
+          </div>
+          <div class="description">Title 3</div>
+        </div>
+        <div class="box">
+          <div class="image">
+            <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />
+          </div>
+          <div class="description">Title 4</div>
+        </div>
+        <div class="box">
+          <div class="image">
+            <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />
+          </div>
+          <div class="description">Title 5</div>
+        </div>
+        <div class="box">
+          <div class="image">
+            <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />
+          </div>
+          <div class="description">Title 6</div>
+        </div>
+        <div class="box">
+          <div class="image">
+            <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />
+          </div>
+          <div class="description">Title 7</div>
+        </div>
+        <div class="box">
+          <div class="image">
+            <img
+              src="img/sakura.png"
+              alt="sakura"
+              title="sakura-photography by Bagus Pangestu"
+            />
+          </div>
+          <div class="description">Title 8</div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
