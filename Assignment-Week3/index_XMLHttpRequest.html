@@ -1,0 +1,308 @@
+<html>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1"
+  />
+  <title>Assingment-Week 3</title>
+  <head>
+    <script type="text/javascript">
+      var currentIndex = 0;
+      var itemArr;
+      getData(); //使用者打開網頁時，立刻透過 JavaScript 連線以上網址，取得景點資料。
+
+      function getData() {
+        let url =
+          "https://padax.github.io/taipei-day-trip-resources/taipei-attractions.json";
+        let req = new XMLHttpRequest();
+        req.open("get", url);
+        req.onload = function () {
+          //連線完成
+          //alert("complete!");
+
+          itemArr = ParseData(this.responseText);
+
+          createBoxes(itemArr, currentIndex, 8);
+          createLoadMoreBtn();
+        };
+        req.send();
+      }
+
+      function ParseData(rawData) {
+        let jsonData = JSON.parse(rawData);
+        let results = jsonData.result.results;
+        let resultsLen = results.length;
+        let itemArr = [];
+
+        // Get each data
+        for (let i = 0; i < resultsLen; i++) {
+          let data = results[i];
+          let stitle = data.stitle;
+          let longitude = data.longitude;
+          let latitude = data.latitude;
+          let urlStr = data.file;
+          // 取得第一張圖檔網址
+          searchStr = "http";
+          indexOfSecondHttp = urlStr.indexOf(searchStr, searchStr.length - 1);
+          if (indexOfSecondHttp === -1) {
+            // 只有一個網址
+            url = urlStr;
+          } else {
+            url = urlStr.substring(0, indexOfSecondHttp);
+          }
+          // 根據題目要求的格式存進array: 景點名稱,經度,緯度,第一張圖檔網址
+          itemArr.push([stitle, longitude, latitude, url]);
+        }
+        return itemArr;
+      }
+
+      function createBox(itemArr, index) {
+        // 取得容器
+        let myContent = document.getElementById("content");
+
+        // 根據 assignment-01 的 項目格式
+        // 1. 建立新的 <div> 元素: box
+        let newDivBox = document.createElement("div");
+        newDivBox.className = "box";
+
+        // 2. 建立新的 <div> 元素: bg
+        let newDivBg = document.createElement("div");
+        newDivBg.className = "bg";
+        newDivBg.style.backgroundImage = "url(" + itemArr[index][3] + ")";
+
+        // 3. 建立新的 <div> 元素: description
+        let newDivDescription = document.createElement("div");
+        newDivDescription.className = "description";
+
+        // 3.1 標題
+        let newPDescription = document.createElement("p");
+        let stitle = itemArr[index][0];
+        let textNodeDescription = document.createTextNode(stitle);
+        newPDescription.appendChild(textNodeDescription); // 將 textNodeDescription 加入至 newPDescription
+        newDivDescription.appendChild(newPDescription); // 將 newPDescription 加入至 newDivDescription
+
+        // 4. 把 bg 和 description 都加入至 box
+        newDivBox.appendChild(newDivBg);
+        newDivBox.appendChild(newDivDescription);
+
+        // 5. 把 box 加入至 myContent
+        myContent.appendChild(newDivBox);
+      }
+
+      function createBoxes(itemArr, startIndex, addNum) {
+        for (let i = startIndex; i < startIndex + addNum; i++) {
+          if (i >= itemArr.length) {
+            break;
+          }
+          createBox(itemArr, i);
+          currentIndex++; // 更新目前顯示到的圖片index
+        }
+      }
+
+      function createLoadMoreBtn() {
+        // 取得容器 並 建立排版
+        let myMainTag = document.getElementById("main");
+        myMainTag.style.display = "flex";
+        myMainTag.style.flexDirection = "column";
+
+        // 1. 建立新的 <button> 元素: button
+        let newButton = document.createElement("button");
+        newButton.id = "btnLoad";
+        newButton.style.display = "flex";
+        newButton.style.margin = "0 0 2rem 0";
+        newButton.style.padding = "0.5rem 2rem";
+        // 2. 建立 button 文字: buttonText
+        let buttonText = "Load More";
+        let textNodeButton = document.createTextNode(buttonText);
+        // 3. 把 buttonText 加入至 button
+        newButton.appendChild(textNodeButton);
+        // 4. 把 button 都加入至 myMainTag
+        myMainTag.appendChild(newButton);
+
+        // 5. 綁定event
+        let btnLoad = document.getElementById("btnLoad");
+        btnLoad.addEventListener("click", AddEight);
+      }
+      function AddEight() {
+        if (currentIndex >= itemArr.length) {
+          alert("已經沒有更多景點囉");
+        }
+        createBoxes(itemArr, currentIndex, 8);
+      }
+    </script>
+
+    <style type="text/css">
+      /* 1. 最上排topbar裡面，兩個div: 標題(文字靠左)、選單列(文字靠右) */
+      .topbar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem 0;
+      }
+      header {
+        margin: 0 0.5rem;
+        flex: 1;
+        text-align: left;
+      }
+      nav {
+        flex: 2;
+        text-align: right;
+      }
+      .menu {
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        padding-inline-start: 0;
+      }
+      .menu li {
+        display: inline-block;
+        list-style: none;
+        padding: 0 0.5rem;
+      }
+      .menu li a {
+        text-decoration: none;
+        color: rgb(32, 32, 32);
+      }
+      .menu li a:hover {
+        color: rgb(95, 94, 94);
+      }
+      /* 2. 歡迎文字的div，上下左右置中對齊，高度300px */
+      body {
+        font-size: 20px;
+      }
+      .welcome {
+        height: 300px;
+        font-size: 2rem;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(190, 221, 250);
+      }
+
+      /* 3. 方框部分 */
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .content {
+        width: 1200px;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 2rem 0;
+      }
+
+      .box {
+        width: 23%;
+        margin: 0.5rem 0;
+      }
+      .bg {
+        /* background-image: url(img/sakura.png); */
+        background-size: cover;
+        background-position: 50% 50%;
+        height: 10em;
+        width: 100%;
+      }
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      .description {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 4rem;
+        padding: 0 0.8rem;
+        background-color: rgb(253, 207, 214);
+      }
+
+      /* 4. RWD: 螢幕寬度(在最下面)*/
+
+      /* 5. 漢堡 */
+      #burger {
+        display: none;
+      }
+
+      label {
+        display: none;
+      }
+
+      /* 6. 消除div邊界*/
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* 4. RWD: 螢幕寬度(由大到小) 1200 600 */
+      @media (max-width: 1200px) {
+        .content {
+          width: 90%;
+        }
+        .box {
+          width: 43%;
+        }
+      }
+      @media (max-width: 600px) {
+        .content {
+          width: 90%;
+        }
+        .box {
+          width: 100%;
+        }
+
+        /* 5. 漢堡 */
+        ul {
+          display: none;
+        }
+        label {
+          display: block;
+        }
+        #burger:checked + ul {
+          display: block;
+        }
+        .icon {
+          margin: 0 0.5rem;
+          height: 1.4rem;
+        }
+        .menu {
+          position: absolute;
+          z-index: 100;
+          top: 52px;
+          right: 0px;
+        }
+        .menu li {
+          display: block;
+          padding: 1rem 2rem;
+          background-color: rgba(255, 255, 255, 0.664);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="topbar">
+      <header>My Website</header>
+      <nav>
+        <label for="burger">
+          <div class="icon"><img src="img/icon-menu.png" /></div>
+        </label>
+        <input type="checkbox" id="burger" />
+        <ul class="menu">
+          <li><a href="#">Item 1</a></li>
+          <li><a href="#">Item 2</a></li>
+          <li><a href="#">Item 3</a></li>
+          <li><a href="#">Item 4</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="welcome">Welcome To MyHome</div>
+    <main id="main">
+      <div id="content" class="content"></div>
+    </main>
+  </body>
+</html>
