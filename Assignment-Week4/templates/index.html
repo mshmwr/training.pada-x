@@ -1,0 +1,26 @@
+{%extends "layout.html"%}
+
+<!-- title -->
+
+{%block title%}
+<div>歡迎光臨，請輸入帳號密碼</div>
+
+{%endblock%}
+
+<!-- body -->
+
+{%block body%}
+
+<div>
+  <p class="title">登入系統</p>
+  <form action="/signin" method="POST">
+    帳號
+    <input name="username" type="text" required />
+    <br />
+    密碼
+    <input name="password" type="password" required />
+    <br />
+    <input type="submit" value="登入" />
+  </form>
+</div>
+{%endblock%}

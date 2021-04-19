@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <script type="text/javascript"></script>
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      header {
+        height: 6rem;
+        background-color: rgb(2, 57, 88);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 1.5rem;
+      }
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      .title {
+        font-size: 1.2rem;
+      }
+      input {
+        padding: 0.4rem 0.6rem;
+        margin: 0.5rem;
+        border-radius: 0.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>{%block title%}{%endblock%}</header>
+    <main>{%block body %}{%endblock%}</main>
+  </body>
+</html>
